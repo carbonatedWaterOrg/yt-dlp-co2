@@ -8,6 +8,13 @@
 It's a modern web interface for yt-dlp with real-time progress tracking and multiple pretty cool themes, from the DEFINITIVE, OFFICIAL, WORLDWIDE provider of Carbonated Water rankings, carbonatedWater.org.
 </div>
 
+## Quick Start
+```bash
+# Navigate to the directory that you want the downloads folder placed at.
+docker run -d -p 8000:8000 -v ./downloads:/app/downloads carbonatedwaterorg/yt-dlp-co2
+# Open http://localhost:8000 and begin downloading
+```
+
 ## Features
 
 - **It uses yt-dlp** which is really great
@@ -37,9 +44,12 @@ It has a few good ones.
 
 </div>
 
-## Quick Start
+## Building and Using
 
 ```bash
+# Clone the repository to your current directory
+git clone https://github.com/carbonatedWaterOrg/yt-dlp-co2.git .
+
 # Docker Compose (recommended)
 docker-compose up -d
 
@@ -84,6 +94,8 @@ Access every yt-dlp feature through organized categories:
 - **And much more**: Network settings, geo-bypass, filesystem options
 
 **Use responsibly**: Only download content you have permission to access offline, such as your own uploads, Creative Commons content, or from platforms that explicitly allow downloads.
+
+[GitHub Repo](https://github.com/carbonatedWaterOrg/yt-dlp-co2)
 
 ## Built With
 
