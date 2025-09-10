@@ -164,9 +164,9 @@ h1 {
 /* Input styling */
 .input-neon {
   background: rgba(10, 26, 10, 0.8);
-  border: 2px solid var(--elf-emerald);
+  border: 2px solid var(--kelethin-emerald);
   border-radius: 10px;
-  color: var(--elf-accent);
+  color: var(--kelethin-accent);
   padding: 12px 16px;
   font-family: 'Cinzel', serif;
   box-shadow: 
@@ -176,10 +176,10 @@ h1 {
 
 .input-neon:focus {
   outline: none;
-  border-color: var(--elf-gold);
+  border-color: var(--kelethin-gold);
   box-shadow: 
-    0 0 25px rgba(212, 175, 55, 0.5),
-    inset 0 0 25px rgba(212, 175, 55, 0.1);
+    0 0 25px rgba(255, 215, 0, 0.5),
+    inset 0 0 25px rgba(255, 215, 0, 0.1);
   background: rgba(16, 32, 16, 0.9);
 }
 
@@ -191,7 +191,7 @@ h1 {
 /* Progress bar */
 .progress-neon {
   background: rgba(10, 26, 10, 0.8);
-  border: 2px solid var(--elf-emerald);
+  border: 2px solid var(--kelethin-emerald);
   border-radius: 10px;
   height: 20px;
   overflow: hidden;
@@ -204,15 +204,15 @@ h1 {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, var(--elf-forest), var(--elf-gold));
+  background: linear-gradient(90deg, var(--kelethin-forest), var(--kelethin-gold));
   width: var(--progress, 0%);
   transition: width 0.3s ease;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
 
 /* Success/Error states */
 .success-neon {
-  border-color: var(--elf-glow);
+  border-color: var(--kelethin-glow);
   background: rgba(50, 205, 50, 0.1);
   box-shadow: 0 0 20px rgba(50, 205, 50, 0.4);
 }
@@ -226,34 +226,34 @@ h1 {
 /* Format selection */
 .format-option {
   background: rgba(10, 26, 10, 0.6);
-  border: 1px solid var(--elf-forest);
+  border: 1px solid var(--kelethin-forest);
   border-radius: 8px;
   padding: 8px 12px;
   margin: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: var(--elf-accent);
+  color: var(--kelethin-accent);
 }
 
 .format-option:hover {
   transform: translateY(-1px);
-  border-color: var(--elf-emerald);
+  border-color: var(--kelethin-emerald);
   background: rgba(16, 32, 16, 0.8);
 }
 
 .format-option:hover,
 .format-option.selected {
-  border-color: var(--elf-gold);
-  background: rgba(212, 175, 55, 0.1);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+  border-color: var(--kelethin-gold);
+  background: rgba(255, 215, 0, 0.1);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
 }
 
 /* Theme option buttons */
 .theme-option {
   background: rgba(10, 26, 10, 0.8);
-  border: 2px solid var(--elf-emerald);
+  border: 2px solid var(--kelethin-emerald);
   border-radius: 10px;
-  color: var(--elf-gold);
+  color: var(--kelethin-gold);
   transition: all 0.3s ease;
   cursor: pointer;
   min-width: 70px;
@@ -266,16 +266,16 @@ h1 {
 
 .theme-option:hover {
   background: rgba(16, 32, 16, 0.9);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-  text-shadow: 0 0 8px var(--elf-gold);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  text-shadow: 0 0 8px var(--kelethin-gold);
   transform: translateY(-1px);
 }
 
 .theme-option.active {
   background: rgba(16, 32, 16, 0.9);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
-  text-shadow: 0 0 10px var(--elf-gold);
-  border-color: var(--elf-gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  text-shadow: 0 0 10px var(--kelethin-gold);
+  border-color: var(--kelethin-gold);
 }
 
 /* Scrollbar styling */
@@ -284,13 +284,39 @@ h1 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--elf-bg);
+  background: var(--kelethin-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, var(--elf-forest), var(--elf-emerald));
+  background: linear-gradient(45deg, var(--kelethin-forest), var(--kelethin-emerald));
   border-radius: 6px;
   box-shadow: 0 0 8px rgba(80, 200, 120, 0.3);
+}
+
+/* Responsive Button Layouts */
+.theme-buttons-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.action-buttons-container {
+  width: 100%;
+}
+
+.action-buttons-container .btn-neon {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.download-primary {
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+/* Header spacing adjustments for mobile */
+.header-title-section {
+  margin-top: 1rem;
 }
 
 /* Responsive adjustments */
@@ -301,8 +327,46 @@ h1 {
   }
   
   .btn-neon {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .theme-option {
+    min-width: 60px;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+  }
+  
+  .theme-buttons-container {
+    margin-bottom: 1rem;
+  }
+  
+  .header-title-section {
+    margin-top: 0;
+  }
+  
+  .action-buttons-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-option {
+    min-width: 50px;
+    padding: 6px 8px;
+    font-size: 0.65rem;
+  }
+  
+  .btn-neon {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    letter-spacing: 0px;
+  }
+  
+  .download-primary {
+    min-width: 80px;
   }
 }
 
@@ -326,31 +390,31 @@ h1 {
   border-radius: 6px;
   padding: 4px;
   transition: all 0.3s ease;
-  border: 1px solid var(--elf-forest);
+  border: 1px solid var(--kelethin-forest);
 }
 
 .close-btn:hover {
   background: rgba(16, 32, 16, 0.9);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-  border-color: var(--elf-emerald);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  border-color: var(--kelethin-emerald);
 }
 
 /* Footer styling */
 footer {
-  border-top: 2px solid var(--elf-emerald);
+  border-top: 2px solid var(--kelethin-emerald);
   background: rgba(10, 26, 10, 0.8);
   box-shadow: 0 -5px 15px rgba(80, 200, 120, 0.2);
 }
 
 footer p {
-  color: var(--elf-accent);
-  text-shadow: 0 0 5px var(--elf-emerald);
+  color: var(--kelethin-accent);
+  text-shadow: 0 0 5px var(--kelethin-emerald);
 }
 
 /* Magical glow animation */
 @keyframes magical-glow {
-  0%, 100% { box-shadow: 0 0 5px var(--elf-gold); }
-  50% { box-shadow: 0 0 20px var(--elf-gold), 0 0 30px var(--elf-emerald); }
+  0%, 100% { box-shadow: 0 0 5px var(--kelethin-gold); }
+  50% { box-shadow: 0 0 20px var(--kelethin-gold), 0 0 30px var(--kelethin-emerald); }
 }
 
 .card:hover {

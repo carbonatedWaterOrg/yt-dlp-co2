@@ -201,6 +201,32 @@ h1 {
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
+/* Responsive Button Layouts */
+.theme-buttons-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.action-buttons-container {
+  width: 100%;
+}
+
+.action-buttons-container .btn-neon {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.download-primary {
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+/* Header spacing adjustments for mobile */
+.header-title-section {
+  margin-top: 1rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   body::before {
@@ -213,8 +239,46 @@ h1 {
   }
   
   .btn-neon {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .theme-option {
+    min-width: 60px;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+  }
+  
+  .theme-buttons-container {
+    margin-bottom: 1rem;
+  }
+  
+  .header-title-section {
+    margin-top: 0;
+  }
+  
+  .action-buttons-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-option {
+    min-width: 50px;
+    padding: 6px 8px;
+    font-size: 0.65rem;
+  }
+  
+  .btn-neon {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    letter-spacing: 0px;
+  }
+  
+  .download-primary {
+    min-width: 80px;
   }
 }
 

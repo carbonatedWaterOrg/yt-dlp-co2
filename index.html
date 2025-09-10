@@ -38,10 +38,10 @@
     <div id="carbonation-bubbles"></div>
     
     <div class="max-w-6xl mx-auto py-6 px-4 min-h-screen">
-        <!-- Compact Header -->
-        <header class="mb-2 text-center relative">
-            <!-- Music & Cats Theme Buttons - Left Side -->
-            <div class="absolute top-0 left-0 flex gap-1">
+        <!-- Responsive Header -->
+        <header class="mb-2 text-center">
+            <!-- Theme Buttons - Always Centered -->
+            <div class="theme-buttons-container flex flex-wrap justify-center gap-1 mb-3">
                 <button 
                     id="theme-music"
                     class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
@@ -66,13 +66,6 @@
                 >
                     🌌 STARRY
                 </button>
-            </div>
-            
-            <h1 class="text-4xl font-bold" id="title-carbonation" title="Click for CARBONATION theme!">yt-dlp-co2</h1>
-            <p class="tagline text-sm opacity-75" id="tagline-carbonation" title="Click for CARBONATION theme!">everything is better carbonated</p>
-            
-            <!-- Theme Switcher - Right Side -->
-            <div class="absolute top-0 right-0 flex gap-1">
                 <button 
                     id="theme-vaporwave"
                     class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
@@ -98,6 +91,12 @@
                     🧝 KELETHIN
                 </button>
             </div>
+            
+            <!-- Title and Tagline -->
+            <div class="header-title-section">
+                <h1 class="text-4xl font-bold" id="title-carbonation" title="Click for CARBONATION theme!">yt-dlp-co2</h1>
+                <p class="tagline text-sm opacity-75" id="tagline-carbonation" title="Click for CARBONATION theme!">everything is better carbonated</p>
+            </div>
         </header>
 
         <!-- Main Content -->
@@ -119,9 +118,10 @@
                 selectedConfig: '',
                 batchMode: false
             }">
-                <!-- Compact Download Form -->
+                <!-- Responsive Download Form -->
                 <div class="card p-2 mb-2">
-                    <div class="flex space-x-2">
+                    <!-- URL Input Row -->
+                    <div class="flex space-x-2 mb-2">
                         <input 
                             type="url" 
                             id="url"
@@ -130,99 +130,6 @@
                             class="input-neon flex-1 text-sm"
                             required
                         >
-                        <button 
-                            type="button" 
-                            @click="
-                                if (!url) return;
-                                loading = true;
-                                fetch(`/formats/${encodeURIComponent(url)}`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.error) {
-                                            console.error('Format fetch error:', data.error);
-                                            return;
-                                        }
-                                        formats = data.formats;
-                                        videoInfo = data;
-                                        showFormats = true;
-                                    })
-                                    .catch(error => console.error('Error fetching formats:', error))
-                                    .finally(() => loading = false);
-                            " 
-                            :disabled="loading || !url" 
-                            class="btn-neon px-3 text-sm" 
-                            :class="{'loading': loading}"
-                        >
-                            <span x-show="!loading">Formats</span>
-                            <span x-show="loading">...</span>
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="
-                                if (!url) return;
-                                loading = true;
-                                fetch(`/info/${encodeURIComponent(url)}?info_type=basic`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.error) {
-                                            console.error('Info fetch error:', data.error);
-                                            return;
-                                        }
-                                        videoInfo = data;
-                                        // Show info modal or display
-                                        const infoHtml = `<div class='card p-3 mb-3 relative group'>
-                                            <button onclick='this.parentElement.remove()' class='close-btn absolute top-2 right-2 text-gray-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity'>
-                                                <svg class='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
-                                                </svg>
-                                            </button>
-                                            <h3>${data.title}</h3>
-                                            <p><strong>Uploader:</strong> ${data.uploader}</p>
-                                            <p><strong>Duration:</strong> ${data.duration ? Math.floor(data.duration/60) + ':' + (data.duration%60).toString().padStart(2,'0') : 'Unknown'}</p>
-                                            <p><strong>Views:</strong> ${data.view_count || 'Unknown'}</p>
-                                            <p><strong>Upload Date:</strong> ${data.upload_date || 'Unknown'}</p>
-                                            ${data.description ? '<p><strong>Description:</strong> ' + data.description.substring(0, 200) + '...</p>' : ''}
-                                        </div>`;
-                                        document.getElementById('download-results').insertAdjacentHTML('afterbegin', infoHtml);
-                                    })
-                                    .catch(error => console.error('Error fetching info:', error))
-                                    .finally(() => loading = false);
-                            " 
-                            :disabled="loading || !url" 
-                            class="btn-neon px-3 text-sm" 
-                            :class="{'loading': loading}"
-                        >
-                            <span x-show="!loading">Info</span>
-                            <span x-show="loading">...</span>
-                        </button>
-                        <button 
-                            @click="showAdvanced = !showAdvanced"
-                            class="btn-neon px-3 text-sm"
-                            type="button"
-                        >
-                            Options
-                        </button>
-                        <button 
-                            @click="searchMode = !searchMode"
-                            class="btn-neon px-3 text-sm"
-                            type="button"
-                        >
-                            Search
-                        </button>
-                        <button 
-                            @click="batchMode = !batchMode"
-                            class="btn-neon px-3 text-sm"
-                            type="button"
-                        >
-                            Batch
-                        </button>
-                        <button 
-                            @click="configMode = !configMode; if(configMode) fetch('/list-configs').then(r=>r.json()).then(d=>savedConfigs=d.configs||[])"
-                            class="btn-neon px-3 text-sm"
-                            type="button"
-                        >
-                            Config
-                        </button>
                         <button 
                             @click="
                                 const formData = new FormData();
@@ -266,9 +173,114 @@
                                 });
                             "
                             :disabled="!url"
-                            class="btn-neon px-4 text-sm"
+                            class="btn-neon px-4 text-sm download-primary"
                         >
                             Download
+                        </button>
+                    </div>
+                    
+                    <!-- Action Buttons - Responsive Grid -->
+                    <div class="action-buttons-container grid grid-cols-2 sm:grid-cols-3 lg:flex gap-2">
+                        <!-- Info & Format Group -->
+                        <button 
+                            type="button" 
+                            @click="
+                                if (!url) return;
+                                loading = true;
+                                fetch(`/formats/${encodeURIComponent(url)}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.error) {
+                                            console.error('Format fetch error:', data.error);
+                                            return;
+                                        }
+                                        formats = data.formats;
+                                        videoInfo = data;
+                                        showFormats = true;
+                                    })
+                                    .catch(error => console.error('Error fetching formats:', error))
+                                    .finally(() => loading = false);
+                            " 
+                            :disabled="loading || !url" 
+                            class="btn-neon px-3 text-sm" 
+                            :class="{'loading': loading}"
+                        >
+                            <span x-show="!loading">Formats</span>
+                            <span x-show="loading">...</span>
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            @click="
+                                if (!url) return;
+                                loading = true;
+                                fetch(`/info/${encodeURIComponent(url)}?info_type=basic`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.error) {
+                                            console.error('Info fetch error:', data.error);
+                                            return;
+                                        }
+                                        videoInfo = data;
+                                        // Show info modal or display
+                                        const infoHtml = `<div class='card p-3 mb-3 relative group'>
+                                            <button onclick='this.parentElement.remove()' class='close-btn absolute top-2 right-2 text-gray-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity'>
+                                                <svg class='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+                                                </svg>
+                                            </button>
+                                            <h3>${data.title}</h3>
+                                            <p><strong>Uploader:</strong> ${data.uploader}</p>
+                                            <p><strong>Duration:</strong> ${data.duration ? Math.floor(data.duration/60) + ':' + (data.duration%60).toString().padStart(2,'0') : 'Unknown'}</p>
+                                            <p><strong>Views:</strong> ${data.view_count || 'Unknown'}</p>
+                                            <p><strong>Upload Date:</strong> ${data.upload_date || 'Unknown'}</p>
+                                            ${data.description ? '<p><strong>Description:</strong> ' + data.description.substring(0, 200) + '...</p>' : ''}
+                                        </div>`;
+                                        document.getElementById('download-results').insertAdjacentHTML('afterbegin', infoHtml);
+                                    })
+                                    .catch(error => console.error('Error fetching info:', error))
+                                    .finally(() => loading = false);
+                            " 
+                            :disabled="loading || !url" 
+                            class="btn-neon px-3 text-sm" 
+                            :class="{'loading': loading}"
+                        >
+                            <span x-show="!loading">Info</span>
+                            <span x-show="loading">...</span>
+                        </button>
+                        
+                        <!-- Config & Options Group -->
+                        <button 
+                            @click="showAdvanced = !showAdvanced"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Options
+                        </button>
+                        
+                        <button 
+                            @click="configMode = !configMode; if(configMode) fetch('/list-configs').then(r=>r.json()).then(d=>savedConfigs=d.configs||[])"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Config
+                        </button>
+                        
+                        <!-- Advanced Features Group -->
+                        <button 
+                            @click="searchMode = !searchMode"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Search
+                        </button>
+                        
+                        <button 
+                            @click="batchMode = !batchMode"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Batch
                         </button>
                     </div>
 
