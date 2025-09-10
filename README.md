@@ -12,6 +12,7 @@ It's a modern web interface for yt-dlp with real-time progress tracking and mult
 ```bash
 # Navigate to the directory that you want the downloads folder placed at.
 docker run -d -p 8000:8000 -v ./downloads:/app/downloads carbonatedwaterorg/yt-dlp-co2
+sudo chown -R $USER:$USER ./downloads
 # Open http://localhost:8000 and begin downloading
 ```
 
@@ -52,10 +53,12 @@ git clone https://github.com/carbonatedWaterOrg/yt-dlp-co2.git .
 
 # Docker Compose (recommended)
 docker-compose up -d
+sudo chown -R $USER:$USER ./downloads
 
 # Docker
 docker build -t yt-dlp-co2 .
 docker run -d -p 8000:8000 -v ./downloads:/app/downloads yt-dlp-co2
+sudo chown -R $USER:$USER ./downloads
 
 # Local development  
 pip install -r requirements.txt
