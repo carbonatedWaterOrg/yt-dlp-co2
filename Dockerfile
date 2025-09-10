@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ ./app/
 COPY index.html ./
 COPY static/ ./static/
+COPY README.md ./README.md
 
 # Create directories
 RUN mkdir -p /app/downloads /app/config
