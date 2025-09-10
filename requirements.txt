@@ -1,0 +1,6 @@
+fastapi==0.116.1
+uvicorn==0.35.0
+jinja2==3.1.6
+yt-dlp
+websockets>=12.0
+python-multipart

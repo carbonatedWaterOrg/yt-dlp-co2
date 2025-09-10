@@ -1,0 +1,10 @@
+services:
+  yt-dlp-co2:
+    build: .
+    ports:  # Comment out this and the line below if using
+      - "8000:8000"  # a reverse proxy on the same Docker host
+    volumes:
+      - ./downloads:/app/downloads
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

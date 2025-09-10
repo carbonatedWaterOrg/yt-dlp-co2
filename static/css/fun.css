@@ -1,0 +1,414 @@
+/* Fun Theme for yt-dlp-co2 */
+/* Playful and colorful for a fun experience! 🎉 */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap');
+
+:root {
+  --cat-orange: #ff8c42;
+  --cat-cream: #fdeaa7;
+  --cat-pink: #ff6b9d;
+  --cat-purple: #c44569;
+  --cat-brown: #8d4925;
+  --cat-gray: #95a5a6;
+  --cat-bg: #2c2c54;
+  --cat-dark: #1a1a2e;
+  --cat-card-bg: rgba(253, 234, 167, 0.95);
+  --cat-accent: #ff6b9d;
+  --cat-paw: #ff8c42;
+  --cat-whisker: #34495e;
+}
+
+body {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 30%, #fd79a8 70%, #e84393 100%);
+  color: var(--cat-brown);
+  font-family: 'Comfortaa', cursive;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Floating paw prints background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Paw print patterns */
+    radial-gradient(circle 8px at 20% 30%, rgba(255, 140, 66, 0.3) 40%, transparent 41%),
+    radial-gradient(circle 6px at 22% 25%, rgba(255, 140, 66, 0.3) 40%, transparent 41%),
+    radial-gradient(circle 6px at 18% 25%, rgba(255, 140, 66, 0.3) 40%, transparent 41%),
+    radial-gradient(circle 4px at 20% 22%, rgba(255, 140, 66, 0.3) 40%, transparent 41%),
+    
+    radial-gradient(circle 8px at 70% 60%, rgba(255, 107, 157, 0.25) 40%, transparent 41%),
+    radial-gradient(circle 6px at 72% 55%, rgba(255, 107, 157, 0.25) 40%, transparent 41%),
+    radial-gradient(circle 6px at 68% 55%, rgba(255, 107, 157, 0.25) 40%, transparent 41%),
+    radial-gradient(circle 4px at 70% 52%, rgba(255, 107, 157, 0.25) 40%, transparent 41%),
+    
+    radial-gradient(circle 8px at 85% 20%, rgba(196, 69, 105, 0.2) 40%, transparent 41%),
+    radial-gradient(circle 6px at 87% 15%, rgba(196, 69, 105, 0.2) 40%, transparent 41%),
+    radial-gradient(circle 6px at 83% 15%, rgba(196, 69, 105, 0.2) 40%, transparent 41%),
+    radial-gradient(circle 4px at 85% 12%, rgba(196, 69, 105, 0.2) 40%, transparent 41%),
+    
+    /* Soft yarn ball textures */
+    radial-gradient(ellipse at 40% 80%, rgba(255, 140, 66, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 40%, rgba(255, 107, 157, 0.08) 0%, transparent 40%);
+  animation: paw-drift 20s ease-in-out infinite;
+  z-index: -2;
+}
+
+/* Floating cat toys */
+#cat-toys {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cat-toy {
+  position: absolute;
+  font-size: 20px;
+  animation: cat-float linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes paw-drift {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-10px) translateX(5px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes cat-float {
+  0% { 
+    transform: translateY(100vh) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% { 
+    transform: translateY(-100px) translateX(50px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Purr-fect text effects */
+h1 {
+  color: var(--cat-purple);
+  text-shadow: 
+    0 0 10px var(--cat-pink),
+    0 0 20px var(--cat-purple),
+    0 0 30px rgba(196, 69, 105, 0.5),
+    /* Fluffy shadow */
+    3px 3px 0px var(--cat-orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: 'Comfortaa', cursive;
+  animation: cat-purr 3s ease-in-out infinite;
+}
+
+@keyframes cat-purr {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+.tagline {
+  color: var(--cat-brown);
+  text-shadow: 
+    0 0 5px var(--cat-cream),
+    0 0 10px var(--cat-orange);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Cozy cat bed card styling */
+.card {
+  background: var(--cat-card-bg);
+  border: 3px solid var(--cat-orange);
+  border-radius: 20px;
+  box-shadow: 
+    0 0 25px rgba(255, 140, 66, 0.4),
+    inset 0 0 25px rgba(255, 107, 157, 0.1),
+    /* Soft cushion effect */
+    0 10px 20px rgba(141, 73, 37, 0.2);
+  backdrop-filter: blur(5px);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, var(--cat-orange), var(--cat-pink), var(--cat-cream));
+  border-radius: 20px;
+  z-index: -1;
+  opacity: 0.4;
+}
+
+/* Fluffy texture overlay */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle 2px at 25% 25%, rgba(255, 140, 66, 0.1) 50%, transparent 51%),
+    radial-gradient(circle 1px at 75% 75%, rgba(255, 107, 157, 0.1) 50%, transparent 51%),
+    radial-gradient(circle 1px at 50% 50%, rgba(196, 69, 105, 0.08) 50%, transparent 51%);
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+/* Cat toy buttons */
+.btn-neon {
+  background: linear-gradient(45deg, var(--cat-orange), var(--cat-pink));
+  border: 3px solid var(--cat-purple);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 20px rgba(255, 107, 157, 0.5),
+    inset 0 0 20px rgba(253, 234, 167, 0.2);
+  font-family: 'Comfortaa', cursive;
+  position: relative;
+}
+
+.btn-neon:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(255, 107, 157, 0.7),
+    inset 0 0 30px rgba(253, 234, 167, 0.3);
+  text-shadow: 0 0 10px white;
+  background: linear-gradient(45deg, var(--cat-pink), var(--cat-purple));
+  animation: cat-wiggle 0.5s ease-out;
+}
+
+@keyframes cat-wiggle {
+  0% { transform: translateY(-3px) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(1deg); }
+  75% { transform: translateY(-3px) rotate(-1deg); }
+  100% { transform: translateY(-3px) rotate(0deg); }
+}
+
+.btn-neon:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  filter: grayscale(30%);
+}
+
+/* Cat food bowl inputs */
+.input-neon {
+  background: rgba(253, 234, 167, 0.9);
+  border: 3px solid var(--cat-orange);
+  border-radius: 15px;
+  color: var(--cat-brown);
+  padding: 14px 18px;
+  font-family: 'Comfortaa', cursive;
+  box-shadow: 
+    0 0 20px rgba(255, 140, 66, 0.4),
+    inset 0 0 20px rgba(255, 107, 157, 0.1);
+}
+
+.input-neon:focus {
+  outline: none;
+  border-color: var(--cat-pink);
+  box-shadow: 
+    0 0 30px rgba(255, 107, 157, 0.6),
+    inset 0 0 30px rgba(255, 107, 157, 0.2);
+  background: rgba(253, 234, 167, 1);
+}
+
+.input-neon::placeholder {
+  color: rgba(141, 73, 37, 0.6);
+  font-style: italic;
+}
+
+/* Cat treat progress bar */
+.progress-neon {
+  background: rgba(253, 234, 167, 0.9);
+  border: 3px solid var(--cat-orange);
+  border-radius: 15px;
+  height: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-neon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cat-orange), var(--cat-pink));
+  width: var(--progress, 0%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 107, 157, 0.8);
+}
+
+/* Success/Error states */
+.success-neon {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+  box-shadow: 0 0 25px rgba(46, 204, 113, 0.5);
+}
+
+.error-neon {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  box-shadow: 0 0 25px rgba(231, 76, 60, 0.5);
+}
+
+/* Cat video selection */
+.format-option {
+  background: rgba(253, 234, 167, 0.8);
+  border: 2px solid var(--cat-cream);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--cat-brown);
+}
+
+.format-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--cat-orange);
+  background: rgba(253, 234, 167, 1);
+}
+
+.format-option:hover,
+.format-option.selected {
+  border-color: var(--cat-pink);
+  background: rgba(255, 107, 157, 0.2);
+  box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
+}
+
+/* Theme option buttons */
+.theme-option {
+  background: rgba(253, 234, 167, 0.9);
+  border: 3px solid var(--cat-orange);
+  border-radius: 15px;
+  color: var(--cat-brown);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 80px;
+  text-align: center;
+  font-family: 'Comfortaa', cursive;
+  font-weight: 600;
+  position: relative;
+  z-index: 1000;
+}
+
+.theme-option:hover {
+  background: rgba(253, 234, 167, 1);
+  box-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
+  text-shadow: 0 0 8px var(--cat-orange);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.theme-option.active {
+  background: rgba(255, 107, 157, 0.3);
+  box-shadow: 0 0 25px rgba(255, 107, 157, 0.7);
+  text-shadow: 0 0 10px var(--cat-pink);
+  border-color: var(--cat-pink);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cat-cream);
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--cat-orange), var(--cat-pink));
+  border-radius: 7px;
+  box-shadow: 0 0 8px rgba(255, 107, 157, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .btn-neon {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for loading states */
+@keyframes purr-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.loading {
+  animation: purr-pulse 1.5s ease-in-out infinite;
+}
+
+/* Close button styling */
+.card:hover .opacity-0 {
+  opacity: 1;
+}
+
+.close-btn {
+  background: rgba(253, 234, 167, 0.9);
+  border-radius: 8px;
+  padding: 6px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--cat-orange);
+}
+
+.close-btn:hover {
+  background: rgba(255, 107, 157, 0.3);
+  box-shadow: 0 0 12px rgba(255, 107, 157, 0.4);
+  border-color: var(--cat-pink);
+}
+
+/* Footer styling */
+footer {
+  border-top: 3px solid var(--cat-orange);
+  background: rgba(253, 234, 167, 0.9);
+  box-shadow: 0 -8px 20px rgba(255, 140, 66, 0.3);
+}
+
+footer p {
+  color: var(--cat-brown);
+  text-shadow: 0 0 5px var(--cat-cream);
+}
+
+/* Cat stretch animation */
+@keyframes cat-stretch {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(1.02); }
+}
+
+.card:hover {
+  animation: cat-stretch 2s ease-in-out infinite;
+}

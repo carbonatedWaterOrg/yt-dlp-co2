@@ -1,0 +1,473 @@
+/* Starry Night Theme for yt-dlp-co2 */
+/* Inspired by Van Gogh's masterpiece "The Starry Night" */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
+
+:root {
+  --starry-deep-blue: #1e3a5f;
+  --starry-night-blue: #2c5f7e;
+  --starry-cosmic-blue: #4a90a4;
+  --starry-gold: #ffd700;
+  --starry-moon: #fff8dc;
+  --starry-star: #ffffe0;
+  --starry-cypress: #2f4f2f;
+  --starry-bg: #0f1419;
+  --starry-card-bg: rgba(30, 58, 95, 0.85);
+  --starry-swirl: #87ceeb;
+  --starry-accent: #daa520;
+  --starry-glow: #add8e6;
+}
+
+body {
+  background: radial-gradient(ellipse at center top, var(--starry-night-blue) 0%, var(--starry-deep-blue) 40%, var(--starry-bg) 100%);
+  color: var(--starry-moon);
+  font-family: 'Merriweather', serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Van Gogh swirling sky background with stars */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Large swirling patterns */
+    radial-gradient(ellipse 300px 150px at 70% 20%, rgba(135, 206, 235, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 200px 100px at 30% 30%, rgba(135, 206, 235, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 250px 120px at 85% 40%, rgba(135, 206, 235, 0.1) 0%, transparent 55%),
+    
+    /* Cypress tree silhouettes */
+    radial-gradient(ellipse 40px 200px at 5% 100%, rgba(47, 79, 47, 0.8) 0%, transparent 70%),
+    radial-gradient(ellipse 30px 180px at 3% 100%, rgba(47, 79, 47, 0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 25px 160px at 95% 100%, rgba(47, 79, 47, 0.7) 0%, transparent 70%),
+    
+    /* Bright stars scattered across the sky */
+    radial-gradient(circle 3px at 20% 25%, var(--starry-star) 40%, transparent 41%),
+    radial-gradient(circle 2px at 35% 15%, var(--starry-gold) 50%, transparent 51%),
+    radial-gradient(circle 4px at 60% 30%, var(--starry-moon) 40%, transparent 41%),
+    radial-gradient(circle 2px at 75% 18%, var(--starry-star) 50%, transparent 51%),
+    radial-gradient(circle 3px at 85% 35%, var(--starry-gold) 45%, transparent 46%),
+    radial-gradient(circle 2px at 15% 45%, var(--starry-star) 50%, transparent 51%),
+    radial-gradient(circle 3px at 40% 50%, var(--starry-moon) 40%, transparent 41%),
+    radial-gradient(circle 2px at 65% 55%, var(--starry-gold) 50%, transparent 51%),
+    radial-gradient(circle 4px at 90% 60%, var(--starry-star) 35%, transparent 36%),
+    radial-gradient(circle 2px at 25% 70%, var(--starry-star) 50%, transparent 51%),
+    
+    /* The prominent moon */
+    radial-gradient(circle 25px at 80% 15%, var(--starry-moon) 0%, rgba(255, 248, 220, 0.8) 30%, transparent 70%);
+  animation: cosmic-swirl 25s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+/* Floating stardust particles */
+#starry-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--starry-star);
+  border-radius: 50%;
+  animation: starry-twinkle linear infinite;
+  box-shadow: 0 0 6px var(--starry-gold);
+}
+
+@keyframes cosmic-swirl {
+  0% { 
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: rotate(0.5deg) scale(1.01);
+    opacity: 0.9;
+  }
+  100% { 
+    transform: rotate(1deg) scale(1.02);
+    opacity: 0.85;
+  }
+}
+
+@keyframes starry-twinkle {
+  0% { 
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 12px var(--starry-gold);
+  }
+  100% { 
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+/* Van Gogh inspired text effects */
+h1 {
+  color: var(--starry-gold);
+  text-shadow: 
+    0 0 15px var(--starry-gold),
+    0 0 25px var(--starry-moon),
+    0 0 35px rgba(255, 215, 0, 0.6),
+    /* Brushstroke shadow effect */
+    3px 3px 0px var(--starry-accent),
+    -1px -1px 0px var(--starry-cosmic-blue);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-family: 'Merriweather', serif;
+  animation: celestial-glow 4s ease-in-out infinite;
+}
+
+@keyframes celestial-glow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 15px var(--starry-gold),
+      0 0 25px var(--starry-moon),
+      3px 3px 0px var(--starry-accent);
+  }
+  50% { 
+    text-shadow: 
+      0 0 25px var(--starry-gold),
+      0 0 35px var(--starry-moon),
+      0 0 45px rgba(255, 215, 0, 0.8),
+      3px 3px 0px var(--starry-accent);
+  }
+}
+
+.tagline {
+  color: var(--starry-glow);
+  text-shadow: 
+    0 0 8px var(--starry-swirl),
+    0 0 15px var(--starry-cosmic-blue);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Impressionistic canvas card styling */
+.card {
+  background: var(--starry-card-bg);
+  border: 3px solid var(--starry-cosmic-blue);
+  border-radius: 15px;
+  box-shadow: 
+    0 0 25px rgba(135, 206, 235, 0.4),
+    inset 0 0 25px rgba(255, 215, 0, 0.08),
+    /* Artistic depth */
+    0 8px 20px rgba(15, 20, 25, 0.6);
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, var(--starry-deep-blue), var(--starry-cosmic-blue), var(--starry-gold));
+  border-radius: 15px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Van Gogh brushstroke texture overlay */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* Horizontal brushstrokes */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(135, 206, 235, 0.04) 1px,
+      transparent 2px,
+      transparent 12px
+    ),
+    /* Diagonal brushstrokes */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      rgba(255, 215, 0, 0.02) 1px,
+      transparent 2px,
+      transparent 16px
+    );
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+/* Celestial button styling */
+.btn-neon {
+  background: linear-gradient(45deg, var(--starry-deep-blue), var(--starry-night-blue));
+  border: 2px solid var(--starry-gold);
+  color: var(--starry-moon);
+  padding: 14px 28px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.4),
+    inset 0 0 20px rgba(135, 206, 235, 0.1);
+  font-family: 'Merriweather', serif;
+  position: relative;
+}
+
+.btn-neon:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 35px rgba(255, 215, 0, 0.7),
+    inset 0 0 35px rgba(135, 206, 235, 0.2);
+  text-shadow: 0 0 15px var(--starry-moon);
+  background: linear-gradient(45deg, var(--starry-cosmic-blue), var(--starry-swirl));
+  animation: stellar-pulse 0.6s ease-out;
+}
+
+@keyframes stellar-pulse {
+  0% { transform: translateY(-3px) scale(1.02); }
+  50% { 
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 12px 40px rgba(255, 215, 0, 0.9),
+      inset 0 0 40px rgba(135, 206, 235, 0.3);
+  }
+  100% { transform: translateY(-3px) scale(1.02); }
+}
+
+.btn-neon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  filter: grayscale(40%);
+}
+
+/* Night sky input styling */
+.input-neon {
+  background: rgba(15, 20, 25, 0.9);
+  border: 2px solid var(--starry-cosmic-blue);
+  border-radius: 12px;
+  color: var(--starry-moon);
+  padding: 14px 18px;
+  font-family: 'Merriweather', serif;
+  box-shadow: 
+    0 0 20px rgba(135, 206, 235, 0.3),
+    inset 0 0 20px rgba(135, 206, 235, 0.05);
+}
+
+.input-neon:focus {
+  outline: none;
+  border-color: var(--starry-gold);
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.5),
+    inset 0 0 30px rgba(255, 215, 0, 0.1);
+  background: rgba(30, 58, 95, 0.9);
+}
+
+.input-neon::placeholder {
+  color: rgba(173, 216, 230, 0.6);
+  font-style: italic;
+}
+
+/* Cosmic progress bar */
+.progress-neon {
+  background: rgba(15, 20, 25, 0.9);
+  border: 2px solid var(--starry-cosmic-blue);
+  border-radius: 12px;
+  height: 22px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-neon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--starry-cosmic-blue), var(--starry-gold));
+  width: var(--progress, 0%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+/* Success/Error states */
+.success-neon {
+  border-color: var(--starry-glow);
+  background: rgba(173, 216, 230, 0.1);
+  box-shadow: 0 0 25px rgba(173, 216, 230, 0.5);
+}
+
+.error-neon {
+  border-color: #cd5c5c;
+  background: rgba(205, 92, 92, 0.1);
+  box-shadow: 0 0 25px rgba(205, 92, 92, 0.5);
+}
+
+/* Video format constellation */
+.format-option {
+  background: rgba(15, 20, 25, 0.7);
+  border: 2px solid var(--starry-deep-blue);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--starry-glow);
+}
+
+.format-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--starry-cosmic-blue);
+  background: rgba(30, 58, 95, 0.8);
+}
+
+.format-option:hover,
+.format-option.selected {
+  border-color: var(--starry-gold);
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Theme option buttons */
+.theme-option {
+  background: rgba(15, 20, 25, 0.9);
+  border: 2px solid var(--starry-cosmic-blue);
+  border-radius: 12px;
+  color: var(--starry-gold);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+  font-family: 'Merriweather', serif;
+  font-weight: 700;
+  position: relative;
+  z-index: 1000;
+}
+
+.theme-option:hover {
+  background: rgba(30, 58, 95, 0.9);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 10px var(--starry-gold);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.theme-option.active {
+  background: rgba(30, 58, 95, 0.9);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+  text-shadow: 0 0 12px var(--starry-gold);
+  border-color: var(--starry-gold);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--starry-bg);
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--starry-deep-blue), var(--starry-cosmic-blue));
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(135, 206, 235, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .btn-neon {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for loading states */
+@keyframes starry-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.loading {
+  animation: starry-pulse 2s ease-in-out infinite;
+}
+
+/* Close button styling */
+.card:hover .opacity-0 {
+  opacity: 1;
+}
+
+.close-btn {
+  background: rgba(15, 20, 25, 0.9);
+  border-radius: 8px;
+  padding: 6px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--starry-deep-blue);
+}
+
+.close-btn:hover {
+  background: rgba(30, 58, 95, 0.9);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+  border-color: var(--starry-cosmic-blue);
+}
+
+/* Footer styling */
+footer {
+  border-top: 2px solid var(--starry-cosmic-blue);
+  background: rgba(15, 20, 25, 0.9);
+  box-shadow: 0 -8px 20px rgba(135, 206, 235, 0.3);
+}
+
+footer p {
+  color: var(--starry-glow);
+  text-shadow: 0 0 8px var(--starry-cosmic-blue);
+}
+
+/* Van Gogh swirling animation for cards */
+@keyframes van-gogh-swirl {
+  0%, 100% { 
+    box-shadow: 0 0 15px var(--starry-cosmic-blue);
+    transform: rotate(0deg);
+  }
+  25% { 
+    box-shadow: 0 0 25px var(--starry-gold), 0 0 35px var(--starry-swirl);
+    transform: rotate(0.2deg);
+  }
+  50% { 
+    box-shadow: 0 0 20px var(--starry-glow), 0 0 30px var(--starry-moon);
+    transform: rotate(0deg);
+  }
+  75% { 
+    box-shadow: 0 0 25px var(--starry-accent), 0 0 35px var(--starry-cosmic-blue);
+    transform: rotate(-0.2deg);
+  }
+}
+
+.card:hover {
+  animation: van-gogh-swirl 4s ease-in-out infinite;
+}

@@ -1,0 +1,358 @@
+/* Kelethin Treetop City Theme for yt-dlp-co2 */
+/* Inspired by the majestic elven city in the boughs of Greater Faydark */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
+
+:root {
+  --kelethin-bark: #8b4513;
+  --kelethin-leaf: #9acd32;
+  --kelethin-gold: #ffd700;
+  --kelethin-emerald: #50c878;
+  --kelethin-forest: #228b22;
+  --kelethin-branch: #654321;
+  --kelethin-bg: #0f1f0f;
+  --kelethin-card-bg: rgba(20, 35, 20, 0.9);
+  --kelethin-accent: #adff2f;
+  --kelethin-glow: #32cd32;
+}
+
+body {
+  background: linear-gradient(135deg, var(--kelethin-bg) 0%, #1a2f1a 30%, #0d220d 70%, var(--kelethin-bg) 100%);
+  color: var(--kelethin-emerald);
+  font-family: 'Cinzel', serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Treetop canopy background with subtle branch patterns */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Tree branch silhouettes */
+    radial-gradient(ellipse 200px 50px at 30% 20%, rgba(139, 69, 19, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 150px 40px at 70% 15%, rgba(139, 69, 19, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 45px at 50% 25%, rgba(139, 69, 19, 0.1) 0%, transparent 70%),
+    /* Leaf clusters */
+    radial-gradient(circle at 25% 30%, rgba(154, 205, 50, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 75% 35%, rgba(173, 255, 47, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 45% 28%, rgba(154, 205, 50, 0.05) 0%, transparent 35%),
+    /* Dappled sunlight */
+    radial-gradient(circle at 60% 60%, rgba(255, 215, 0, 0.04) 0%, transparent 30%),
+    radial-gradient(circle at 20% 70%, rgba(255, 215, 0, 0.03) 0%, transparent 25%);
+  animation: canopy-sway 12s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+
+@keyframes canopy-sway {
+  0% { transform: scale(1) translateX(0px) rotate(0deg); opacity: 0.7; }
+  100% { transform: scale(1.02) translateX(2px) rotate(0.5deg); opacity: 0.9; }
+}
+
+
+/* Kelethin wood-elf text effects */
+h1 {
+  color: var(--kelethin-gold);
+  text-shadow: 
+    0 0 10px var(--kelethin-gold),
+    0 0 20px var(--kelethin-gold),
+    0 0 30px rgba(255, 215, 0, 0.6),
+    /* Subtle bark texture shadow */
+    2px 2px 0px var(--kelethin-branch);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-family: 'Cinzel', serif;
+}
+
+.tagline {
+  color: var(--kelethin-accent);
+  text-shadow: 
+    0 0 5px var(--kelethin-leaf),
+    0 0 10px var(--kelethin-accent);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Wooden platform card styling - like Kelethin's tree platforms */
+.card {
+  background: var(--kelethin-card-bg);
+  border: 2px solid var(--kelethin-branch);
+  border-radius: 12px;
+  box-shadow: 
+    0 0 20px rgba(139, 69, 19, 0.4),
+    inset 0 0 20px rgba(154, 205, 50, 0.05),
+    /* Wood grain shadow */
+    0 4px 8px rgba(101, 67, 33, 0.3);
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--kelethin-bark), var(--kelethin-leaf), var(--kelethin-gold));
+  border-radius: 12px;
+  z-index: -1;
+  opacity: 0.2;
+}
+
+/* Wood grain texture overlay */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.03) 1px,
+      transparent 2px,
+      transparent 8px
+    );
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* Elven-crafted button styling */
+.btn-neon {
+  background: linear-gradient(45deg, var(--kelethin-forest), var(--kelethin-emerald));
+  border: 2px solid var(--kelethin-bark);
+  color: var(--kelethin-gold);
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 15px rgba(139, 69, 19, 0.4),
+    inset 0 0 15px rgba(154, 205, 50, 0.1);
+  font-family: 'Cinzel', serif;
+  position: relative;
+}
+
+.btn-neon:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 5px 25px rgba(255, 215, 0, 0.6),
+    inset 0 0 25px rgba(154, 205, 50, 0.2);
+  text-shadow: 0 0 10px var(--kelethin-gold);
+  background: linear-gradient(45deg, var(--kelethin-emerald), var(--kelethin-glow));
+}
+
+.btn-neon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  filter: grayscale(30%);
+}
+
+/* Input styling */
+.input-neon {
+  background: rgba(10, 26, 10, 0.8);
+  border: 2px solid var(--elf-emerald);
+  border-radius: 10px;
+  color: var(--elf-accent);
+  padding: 12px 16px;
+  font-family: 'Cinzel', serif;
+  box-shadow: 
+    0 0 15px rgba(80, 200, 120, 0.3),
+    inset 0 0 15px rgba(80, 200, 120, 0.05);
+}
+
+.input-neon:focus {
+  outline: none;
+  border-color: var(--elf-gold);
+  box-shadow: 
+    0 0 25px rgba(212, 175, 55, 0.5),
+    inset 0 0 25px rgba(212, 175, 55, 0.1);
+  background: rgba(16, 32, 16, 0.9);
+}
+
+.input-neon::placeholder {
+  color: rgba(152, 251, 152, 0.6);
+  font-style: italic;
+}
+
+/* Progress bar */
+.progress-neon {
+  background: rgba(10, 26, 10, 0.8);
+  border: 2px solid var(--elf-emerald);
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-neon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--elf-forest), var(--elf-gold));
+  width: var(--progress, 0%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+/* Success/Error states */
+.success-neon {
+  border-color: var(--elf-glow);
+  background: rgba(50, 205, 50, 0.1);
+  box-shadow: 0 0 20px rgba(50, 205, 50, 0.4);
+}
+
+.error-neon {
+  border-color: #cd5c5c;
+  background: rgba(205, 92, 92, 0.1);
+  box-shadow: 0 0 20px rgba(205, 92, 92, 0.4);
+}
+
+/* Format selection */
+.format-option {
+  background: rgba(10, 26, 10, 0.6);
+  border: 1px solid var(--elf-forest);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--elf-accent);
+}
+
+.format-option:hover {
+  transform: translateY(-1px);
+  border-color: var(--elf-emerald);
+  background: rgba(16, 32, 16, 0.8);
+}
+
+.format-option:hover,
+.format-option.selected {
+  border-color: var(--elf-gold);
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+}
+
+/* Theme option buttons */
+.theme-option {
+  background: rgba(10, 26, 10, 0.8);
+  border: 2px solid var(--elf-emerald);
+  border-radius: 10px;
+  color: var(--elf-gold);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  position: relative;
+  z-index: 1000;
+}
+
+.theme-option:hover {
+  background: rgba(16, 32, 16, 0.9);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  text-shadow: 0 0 8px var(--elf-gold);
+  transform: translateY(-1px);
+}
+
+.theme-option.active {
+  background: rgba(16, 32, 16, 0.9);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  text-shadow: 0 0 10px var(--elf-gold);
+  border-color: var(--elf-gold);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--elf-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--elf-forest), var(--elf-emerald));
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(80, 200, 120, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .btn-neon {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for loading states */
+@keyframes pulse-elf {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.loading {
+  animation: pulse-elf 1.5s ease-in-out infinite;
+}
+
+/* Close button styling */
+.card:hover .opacity-0 {
+  opacity: 1;
+}
+
+.close-btn {
+  background: rgba(10, 26, 10, 0.8);
+  border-radius: 6px;
+  padding: 4px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--elf-forest);
+}
+
+.close-btn:hover {
+  background: rgba(16, 32, 16, 0.9);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  border-color: var(--elf-emerald);
+}
+
+/* Footer styling */
+footer {
+  border-top: 2px solid var(--elf-emerald);
+  background: rgba(10, 26, 10, 0.8);
+  box-shadow: 0 -5px 15px rgba(80, 200, 120, 0.2);
+}
+
+footer p {
+  color: var(--elf-accent);
+  text-shadow: 0 0 5px var(--elf-emerald);
+}
+
+/* Magical glow animation */
+@keyframes magical-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--elf-gold); }
+  50% { box-shadow: 0 0 20px var(--elf-gold), 0 0 30px var(--elf-emerald); }
+}
+
+.card:hover {
+  animation: magical-glow 2s ease-in-out infinite;
+}

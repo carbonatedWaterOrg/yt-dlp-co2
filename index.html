@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yt-dlp-co2</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png">
+    
+    <!-- TailwindCSS v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Default Theme CSS -->
+    <link rel="stylesheet" href="/static/css/carbonation.css" id="theme-css">
+    
+    <!-- HTMX -->
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+    
+    <!-- App JavaScript -->
+    <script defer src="/static/js/app.js"></script>
+</head>
+<body>
+    <!-- Matrix Rain Effect -->
+    <div id="matrix-rain"></div>
+    
+    <!-- Audio Visualizer Effect -->
+    <div id="audio-visualizer"></div>
+    
+    <!-- Starry Night Particles Effect -->
+    <div id="starry-particles"></div>
+    
+    <!-- Carbonation Bubbles Effect -->
+    <div id="carbonation-bubbles"></div>
+    
+    <div class="max-w-6xl mx-auto py-6 px-4 min-h-screen">
+        <!-- Compact Header -->
+        <header class="mb-2 text-center relative">
+            <!-- Music & Cats Theme Buttons - Left Side -->
+            <div class="absolute top-0 left-0 flex gap-1">
+                <button 
+                    id="theme-music"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Music Theme"
+                    data-theme="music"
+                >
+                    🎵 MUSIC
+                </button>
+                <button 
+                    id="theme-fun"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Fun Theme"
+                    data-theme="fun"
+                >
+                    🎉 FUN
+                </button>
+                <button 
+                    id="theme-starry-night"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Starry Night Theme"
+                    data-theme="starry-night"
+                >
+                    🌌 STARRY
+                </button>
+            </div>
+            
+            <h1 class="text-4xl font-bold" id="title-carbonation" title="Click for CARBONATION theme!">yt-dlp-co2</h1>
+            <p class="tagline text-sm opacity-75" id="tagline-carbonation" title="Click for CARBONATION theme!">everything is better carbonated</p>
+            
+            <!-- Theme Switcher - Right Side -->
+            <div class="absolute top-0 right-0 flex gap-1">
+                <button 
+                    id="theme-vaporwave"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Vaporwave Theme"
+                    data-theme="vaporwave"
+                >
+                    🌴 VAPOR
+                </button>
+                <button 
+                    id="theme-matrix"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Matrix Theme"
+                    data-theme="matrix"
+                >
+                    🕶️ MATRIX
+                </button>
+                <button 
+                    id="theme-kelethin"
+                    class="theme-option p-2 text-xs font-bold uppercase tracking-wider"
+                    title="Kelethin Theme"
+                    data-theme="kelethin"
+                >
+                    🧝 KELETHIN
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <div x-data="{ 
+                url: '',
+                showFormats: false, 
+                formats: [], 
+                videoInfo: null, 
+                loading: false,
+                selectedFormat: null,
+                showAdvanced: false,
+                options: {},
+                searchMode: false,
+                searchQuery: '',
+                searchResults: [],
+                configMode: false,
+                savedConfigs: [],
+                selectedConfig: '',
+                batchMode: false
+            }">
+                <!-- Compact Download Form -->
+                <div class="card p-2 mb-2">
+                    <div class="flex space-x-2">
+                        <input 
+                            type="url" 
+                            id="url"
+                            x-model="url"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            class="input-neon flex-1 text-sm"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            @click="
+                                if (!url) return;
+                                loading = true;
+                                fetch(`/formats/${encodeURIComponent(url)}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.error) {
+                                            console.error('Format fetch error:', data.error);
+                                            return;
+                                        }
+                                        formats = data.formats;
+                                        videoInfo = data;
+                                        showFormats = true;
+                                    })
+                                    .catch(error => console.error('Error fetching formats:', error))
+                                    .finally(() => loading = false);
+                            " 
+                            :disabled="loading || !url" 
+                            class="btn-neon px-3 text-sm" 
+                            :class="{'loading': loading}"
+                        >
+                            <span x-show="!loading">Formats</span>
+                            <span x-show="loading">...</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="
+                                if (!url) return;
+                                loading = true;
+                                fetch(`/info/${encodeURIComponent(url)}?info_type=basic`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.error) {
+                                            console.error('Info fetch error:', data.error);
+                                            return;
+                                        }
+                                        videoInfo = data;
+                                        // Show info modal or display
+                                        const infoHtml = `<div class='card p-3 mb-3 relative group'>
+                                            <button onclick='this.parentElement.remove()' class='close-btn absolute top-2 right-2 text-gray-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity'>
+                                                <svg class='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+                                                </svg>
+                                            </button>
+                                            <h3>${data.title}</h3>
+                                            <p><strong>Uploader:</strong> ${data.uploader}</p>
+                                            <p><strong>Duration:</strong> ${data.duration ? Math.floor(data.duration/60) + ':' + (data.duration%60).toString().padStart(2,'0') : 'Unknown'}</p>
+                                            <p><strong>Views:</strong> ${data.view_count || 'Unknown'}</p>
+                                            <p><strong>Upload Date:</strong> ${data.upload_date || 'Unknown'}</p>
+                                            ${data.description ? '<p><strong>Description:</strong> ' + data.description.substring(0, 200) + '...</p>' : ''}
+                                        </div>`;
+                                        document.getElementById('download-results').insertAdjacentHTML('afterbegin', infoHtml);
+                                    })
+                                    .catch(error => console.error('Error fetching info:', error))
+                                    .finally(() => loading = false);
+                            " 
+                            :disabled="loading || !url" 
+                            class="btn-neon px-3 text-sm" 
+                            :class="{'loading': loading}"
+                        >
+                            <span x-show="!loading">Info</span>
+                            <span x-show="loading">...</span>
+                        </button>
+                        <button 
+                            @click="showAdvanced = !showAdvanced"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Options
+                        </button>
+                        <button 
+                            @click="searchMode = !searchMode"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Search
+                        </button>
+                        <button 
+                            @click="batchMode = !batchMode"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Batch
+                        </button>
+                        <button 
+                            @click="configMode = !configMode; if(configMode) fetch('/list-configs').then(r=>r.json()).then(d=>savedConfigs=d.configs||[])"
+                            class="btn-neon px-3 text-sm"
+                            type="button"
+                        >
+                            Config
+                        </button>
+                        <button 
+                            @click="
+                                const formData = new FormData();
+                                formData.append('url', url);
+                                
+                                // Add all options to form data
+                                Object.keys(options).forEach(key => {
+                                    if (options[key] !== null && options[key] !== undefined && options[key] !== '') {
+                                        if (Array.isArray(options[key])) {
+                                            formData.append(key, options[key].join(','));
+                                        } else {
+                                            formData.append(key, options[key]);
+                                        }
+                                    }
+                                });
+                                
+                                fetch('/download', {
+                                    method: 'POST',
+                                    body: formData
+                                })
+                                .then(response => response.text())
+                                .then(html => {
+                                    document.getElementById('download-results').insertAdjacentHTML('afterbegin', html);
+                                })
+                                .catch(error => {
+                                    console.error('Download error:', error);
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'error-neon card p-3 mb-3 relative group';
+                                    errorDiv.innerHTML = `
+                                        <button onclick='this.parentElement.remove()' class='close-btn absolute top-2 right-2 text-gray-400 hover:text-white opacity-0 transition-opacity'>
+                                            <svg class='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+                                            </svg>
+                                        </button>
+                                        <div class='flex items-center'>
+                                            <div class='h-4 w-4 bg-red-600 rounded-full mr-3'></div>
+                                            <span>Download failed: ${error.message || error}</span>
+                                        </div>
+                                    `;
+                                    document.getElementById('download-results').insertAdjacentElement('afterbegin', errorDiv);
+                                });
+                            "
+                            :disabled="!url"
+                            class="btn-neon px-4 text-sm"
+                        >
+                            Download
+                        </button>
+                    </div>
+
+                    <!-- Compact Format Selection -->
+                    <div x-show="showFormats" class="mt-2" x-transition>
+                        <div x-show="videoInfo" class="mb-1 p-1 card text-xs">
+                            <div class="font-semibold truncate" x-text="videoInfo?.title"></div>
+                        </div>
+
+                        <div class="grid gap-1">
+                            <template x-for="format in formats" :key="format.format_id">
+                                <div 
+                                    @click="
+                                        selectedFormat = format.format_id;
+                                        const formData = new FormData();
+                                        formData.append('url', url);
+                                        formData.append('format_id', format.format_id);
+                                        fetch('/download', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                        .then(response => response.text())
+                                        .then(html => {
+                                            document.getElementById('download-results').insertAdjacentHTML('afterbegin', html);
+                                            showFormats = false;
+                                        })
+                                        .catch(error => console.error('Download error:', error));
+                                    "
+                                    class="format-option cursor-pointer p-1 text-xs"
+                                    :class="selectedFormat === format.format_id ? 'selected' : ''"
+                                >
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium" x-text="format.quality"></span>
+                                        <span class="text-xs opacity-75" x-text="format.ext"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Panel -->
+                    <div x-show="searchMode" class="mt-3" x-transition>
+                        <div class="card p-3">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-lg font-semibold">Search Videos</h3>
+                                <button @click="searchMode = false" class="text-sm opacity-75 hover:opacity-100">✕</button>
+                            </div>
+                            <div class="flex space-x-2 mb-3">
+                                <input 
+                                    type="text" 
+                                    x-model="searchQuery" 
+                                    placeholder="Search for videos..." 
+                                    class="input-neon flex-1 text-sm"
+                                    @keyup.enter="
+                                        if (!searchQuery) return;
+                                        loading = true;
+                                        fetch(`/search/${encodeURIComponent(searchQuery)}`)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                searchResults = data.results || [];
+                                            })
+                                            .catch(error => console.error('Search error:', error))
+                                            .finally(() => loading = false);
+                                    "
+                                >
+                                <button 
+                                    @click="
+                                        if (!searchQuery) return;
+                                        loading = true;
+                                        fetch(`/search/${encodeURIComponent(searchQuery)}`)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                searchResults = data.results || [];
+                                            })
+                                            .catch(error => console.error('Search error:', error))
+                                            .finally(() => loading = false);
+                                    "
+                                    :disabled="!searchQuery || loading"
+                                    class="btn-neon px-3 text-sm"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                            <div x-show="searchResults.length > 0" class="space-y-2 max-h-64 overflow-y-auto">
+                                <template x-for="result in searchResults" :key="result.id">
+                                    <div 
+                                        class="p-2 border border-opacity-20 border-gray-500 rounded cursor-pointer hover:bg-opacity-10 hover:bg-white"
+                                        @click="url = result.url; searchMode = false;"
+                                    >
+                                        <div class="font-medium text-sm" x-text="result.title"></div>
+                                        <div class="text-xs opacity-75">
+                                            <span x-text="result.uploader"></span>
+                                            <span x-show="result.view_count"> • <span x-text="result.view_count"></span> views</span>
+                                            <span x-show="result.duration"> • <span x-text="Math.floor(result.duration/60) + ':' + (result.duration%60).toString().padStart(2,'0')"></span></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Upload Panel -->
+                    <div x-show="batchMode" class="mt-3" x-transition>
+                        <div class="card p-3">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-lg font-semibold">Batch Download</h3>
+                                <button @click="batchMode = false" class="text-sm opacity-75 hover:opacity-100">✕</button>
+                            </div>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Upload Batch File (URLs, one per line)</label>
+                                    <input 
+                                        type="file" 
+                                        accept=".txt,.list" 
+                                        class="input-neon w-full text-sm"
+                                        @change="
+                                            const file = $event.target.files[0];
+                                            if (file) {
+                                                const formData = new FormData();
+                                                formData.append('batchfile', file);
+                                                // Add options
+                                                Object.keys(options).forEach(key => {
+                                                    if (options[key] !== null && options[key] !== undefined && options[key] !== '') {
+                                                        if (Array.isArray(options[key])) {
+                                                            formData.append(key, options[key].join(','));
+                                                        } else {
+                                                            formData.append(key, options[key]);
+                                                        }
+                                                    }
+                                                });
+                                                
+                                                fetch('/download', {
+                                                    method: 'POST',
+                                                    body: formData
+                                                })
+                                                .then(response => response.text())
+                                                .then(html => {
+                                                    document.getElementById('download-results').insertAdjacentHTML('afterbegin', html);
+                                                    batchMode = false;
+                                                })
+                                                .catch(error => console.error('Batch download error:', error));
+                                            }
+                                        "
+                                    >
+                                </div>
+                                <p class="text-xs opacity-75">Upload a text file containing URLs (one per line). The current options will be applied to all URLs.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Configuration Panel -->
+                    <div x-show="configMode" class="mt-3" x-transition>
+                        <div class="card p-3">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-lg font-semibold">Configuration Management</h3>
+                                <button @click="configMode = false" class="text-sm opacity-75 hover:opacity-100">✕</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex space-x-2">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Configuration name" 
+                                        class="input-neon flex-1 text-sm"
+                                        x-model="selectedConfig"
+                                    >
+                                    <button 
+                                        @click="
+                                            if (!selectedConfig) return;
+                                            const formData = new FormData();
+                                            formData.append('config_name', selectedConfig);
+                                            Object.keys(options).forEach(key => {
+                                                if (options[key] !== null && options[key] !== undefined && options[key] !== '') {
+                                                    if (Array.isArray(options[key])) {
+                                                        formData.append(key, options[key].join(','));
+                                                    } else {
+                                                        formData.append(key, options[key]);
+                                                    }
+                                                }
+                                            });
+                                            fetch('/save-config', {method: 'POST', body: formData})
+                                                .then(r => r.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        fetch('/list-configs').then(r=>r.json()).then(d=>savedConfigs=d.configs||[]);
+                                                    }
+                                                });
+                                        "
+                                        class="btn-neon px-3 text-sm"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                                <div x-show="savedConfigs.length > 0">
+                                    <label class="block text-sm font-medium mb-1">Load Configuration</label>
+                                    <select 
+                                        class="input-neon w-full text-sm"
+                                        @change="
+                                            if ($event.target.value) {
+                                                fetch(`/load-config/${$event.target.value}`)
+                                                    .then(r => r.json())
+                                                    .then(data => {
+                                                        if (data.success) {
+                                                            options = data.config;
+                                                        }
+                                                    });
+                                            }
+                                        "
+                                    >
+                                        <option value="">Select a configuration...</option>
+                                        <template x-for="config in savedConfigs" :key="config.name">
+                                            <option :value="config.name" x-text="config.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Options Panel -->
+                    <div x-show="showAdvanced" class="mt-3" x-transition x-data="{
+                        activeTab: 'general',
+                        optionCategories: {
+                            'general': 'General Options',
+                            'video_selection': 'Video Selection',
+                            'download': 'Download Options',
+                            'network': 'Network Options',
+                            'filesystem': 'Filesystem Options',
+                            'video_format': 'Video Format Options',
+                            'subtitle': 'Subtitle Options',
+                            'post_processing': 'Post-Processing Options',
+                            'authentication': 'Authentication Options',
+                            'thumbnail': 'Thumbnail Options',
+                            'sponsorblock': 'SponsorBlock Options',
+                            'extractor': 'Extractor Options',
+                            'geo_restriction': 'Geo Restriction',
+                            'cookies': 'Cookies & Headers',
+                            'workarounds': 'Workarounds',
+                            'verbosity': 'Verbosity & Simulation'
+                        }
+                    }">
+                        <div class="card p-3">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-lg font-semibold">Advanced Options</h3>
+                                <button @click="showAdvanced = false" class="text-sm opacity-75 hover:opacity-100">✕</button>
+                            </div>
+                            
+                            <!-- Category Tabs -->
+                            <div class="flex flex-wrap gap-1 mb-3 border-b border-opacity-20 border-gray-500">
+                                <template x-for="(label, key) in optionCategories" :key="key">
+                                    <button 
+                                        @click="activeTab = key"
+                                        :class="activeTab === key ? 'border-b-2 border-current' : 'opacity-75'"
+                                        class="px-2 py-1 text-xs font-medium hover:opacity-100 transition-opacity"
+                                        x-text="label"
+                                    ></button>
+                                </template>
+                            </div>
+                            
+                            <!-- General Options -->
+                            <div x-show="activeTab === 'general'" class="space-y-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.ignore_errors" class="rounded">
+                                        <span class="text-sm">Ignore errors</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.abort_on_error" class="rounded">
+                                        <span class="text-sm">Abort on error</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.mark_watched" class="rounded">
+                                        <span class="text-sm">Mark as watched</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.extract_flat" class="rounded">
+                                        <span class="text-sm">Flat playlist</span>
+                                    </label>
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- Video Selection -->
+                            <div x-show="activeTab === 'video_selection'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Playlist Start</label>
+                                        <input type="number" x-model="options.playliststart" min="1" class="input-neon w-full text-sm" placeholder="1">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Playlist End</label>
+                                        <input type="number" x-model="options.playlistend" min="1" class="input-neon w-full text-sm" placeholder="Last">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Playlist Items</label>
+                                        <input type="text" x-model="options.playlist_items" class="input-neon w-full text-sm" placeholder="1,3-5,7">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Age Limit</label>
+                                        <input type="number" x-model="options.age_limit" min="0" class="input-neon w-full text-sm" placeholder="years">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Match Title</label>
+                                        <input type="text" x-model="options.matchtitle" class="input-neon w-full text-sm" placeholder="Regex pattern">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Reject Title</label>
+                                        <input type="text" x-model="options.rejecttitle" class="input-neon w-full text-sm" placeholder="Regex pattern">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Min File Size</label>
+                                        <input type="text" x-model="options.min_filesize" class="input-neon w-full text-sm" placeholder="50K or 44.6M">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Max File Size</label>
+                                        <input type="text" x-model="options.max_filesize" class="input-neon w-full text-sm" placeholder="50K or 44.6M">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Min Views</label>
+                                        <input type="number" x-model="options.min_views" min="0" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Max Views</label>
+                                        <input type="number" x-model="options.max_views" min="0" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Date</label>
+                                        <input type="text" x-model="options.date" class="input-neon w-full text-sm" placeholder="YYYYMMDD or today-2weeks">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Date After</label>
+                                        <input type="text" x-model="options.dateafter" class="input-neon w-full text-sm" placeholder="YYYYMMDD">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Date Before</label>
+                                        <input type="text" x-model="options.datebefore" class="input-neon w-full text-sm" placeholder="YYYYMMDD">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Match Filter</label>
+                                        <input type="text" x-model="options.match_filter" class="input-neon w-full text-sm" placeholder="like_count>?100 & description~='cats'">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Download Archive</label>
+                                        <input type="file" x-model="options.download_archive" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Max Downloads</label>
+                                        <input type="number" x-model="options.max_downloads" min="1" class="input-neon w-full text-sm" placeholder="number of files">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Skip Playlist After Errors</label>
+                                        <input type="number" x-model="options.skip_playlist_after_errors" min="1" class="input-neon w-full text-sm" placeholder="error count">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.no_playlist" class="rounded">
+                                        <span class="text-sm">Download only video (not playlist)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.yes_playlist" class="rounded">
+                                        <span class="text-sm">Download playlist (if URL has both)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.break_on_existing" class="rounded">
+                                        <span class="text-sm">Stop when file exists in archive</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.break_per_input" class="rounded">
+                                        <span class="text-sm">Reset limits per input URL</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Download Options -->
+                            <div x-show="activeTab === 'download'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Concurrent Fragments</label>
+                                        <input type="number" x-model="options.concurrent_fragments" min="1" max="32" class="input-neon w-full text-sm" placeholder="1">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Rate Limit</label>
+                                        <input type="text" x-model="options.limit_rate" class="input-neon w-full text-sm" placeholder="50K or 4.2M">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Throttled Rate</label>
+                                        <input type="text" x-model="options.throttled_rate" class="input-neon w-full text-sm" placeholder="100K">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Retries</label>
+                                        <input type="number" x-model="options.retries" min="0" class="input-neon w-full text-sm" placeholder="10">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Fragment Retries</label>
+                                        <input type="number" x-model="options.fragment_retries" min="0" class="input-neon w-full text-sm" placeholder="10">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">File Access Retries</label>
+                                        <input type="number" x-model="options.file_access_retries" min="0" class="input-neon w-full text-sm" placeholder="3">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Buffer Size</label>
+                                        <input type="text" x-model="options.buffer_size" class="input-neon w-full text-sm" placeholder="1024 or 16K">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">HTTP Chunk Size</label>
+                                        <input type="text" x-model="options.http_chunk_size" class="input-neon w-full text-sm" placeholder="10485760 or 10M">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">External Downloader</label>
+                                        <input type="text" x-model="options.external_downloader" class="input-neon w-full text-sm" placeholder="aria2c, curl, wget">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Downloader Args</label>
+                                        <input type="text" x-model="options.external_downloader_args" class="input-neon w-full text-sm" placeholder="aria2c:--max-tries=10">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Download Sections</label>
+                                        <input type="text" x-model="options.download_sections" class="input-neon w-full text-sm" placeholder="*10:15-inf or intro">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Wait for Video (Live)</label>
+                                        <input type="text" x-model="options.wait_for_video" class="input-neon w-full text-sm" placeholder="300 or 60-600">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.skip_unavailable_fragments" class="rounded">
+                                        <span class="text-sm">Skip unavailable fragments</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.keep_fragments" class="rounded">
+                                        <span class="text-sm">Keep fragments</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.playlist_random" class="rounded">
+                                        <span class="text-sm">Download playlist in random order</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.lazy_playlist" class="rounded">
+                                        <span class="text-sm">Process playlist entries as received</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.live_from_start" class="rounded">
+                                        <span class="text-sm">Download live streams from start</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.hls_prefer_native" class="rounded">
+                                        <span class="text-sm">Prefer native HLS downloader</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Network Options -->
+                            <div x-show="activeTab === 'network'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Proxy URL</label>
+                                        <input type="url" x-model="options.proxy" class="input-neon w-full text-sm" placeholder="http://proxy.example.com:8080">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Socket Timeout</label>
+                                        <input type="number" x-model="options.socket_timeout" min="0" class="input-neon w-full text-sm" placeholder="seconds">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Source Address</label>
+                                        <input type="text" x-model="options.source_address" class="input-neon w-full text-sm" placeholder="192.168.1.100">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Impersonate Client</label>
+                                        <input type="text" x-model="options.impersonate" class="input-neon w-full text-sm" placeholder="chrome, firefox, safari">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.force_ipv4" class="rounded">
+                                        <span class="text-sm">Force IPv4</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.force_ipv6" class="rounded">
+                                        <span class="text-sm">Force IPv6</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.enable_file_urls" class="rounded">
+                                        <span class="text-sm">Enable file:// URLs</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Filesystem Options -->
+                            <div x-show="activeTab === 'filesystem'" class="space-y-3">
+                                <!-- Batch File Option -->
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Batch File</label>
+                                    <input 
+                                        type="file" 
+                                        x-model="options.batchfile"
+                                        accept=".txt,.list"
+                                        class="input-neon w-full text-sm"
+                                    >
+                                    <p class="text-xs opacity-75 mt-1">File containing URLs to download (one per line)</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Output Template</label>
+                                    <input type="text" x-model="options.outtmpl" class="input-neon w-full text-sm" placeholder="%(title)s.%(ext)s">
+                                    <p class="text-xs opacity-75 mt-1">Use %(field)s for metadata fields</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Trim Filenames</label>
+                                        <input type="number" x-model="options.trim_filenames" min="1" class="input-neon w-full text-sm" placeholder="characters">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.restrict_filenames" class="rounded">
+                                        <span class="text-sm">Restrict filenames</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.no_overwrites" class="rounded">
+                                        <span class="text-sm">No overwrites</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.continue_dl" class="rounded">
+                                        <span class="text-sm">Continue downloads</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.write_description" class="rounded">
+                                        <span class="text-sm">Write description</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.write_info_json" class="rounded">
+                                        <span class="text-sm">Write info JSON</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.write_annotations" class="rounded">
+                                        <span class="text-sm">Write annotations</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Video Format Options -->
+                            <div x-show="activeTab === 'video_format'" class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Format</label>
+                                    <input type="text" x-model="options.format" class="input-neon w-full text-sm" placeholder="best[height<=480]">
+                                    <p class="text-xs opacity-75 mt-1">Format selector (e.g., best, worst, mp4, etc.)</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Format Sort</label>
+                                    <input type="text" x-model="options.format_sort" class="input-neon w-full text-sm" placeholder="height,tbr,lang">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.video_multistreams" class="rounded">
+                                        <span class="text-sm">Video multistreams</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.audio_multistreams" class="rounded">
+                                        <span class="text-sm">Audio multistreams</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.prefer_free_formats" class="rounded">
+                                        <span class="text-sm">Prefer free formats</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.check_all_formats" class="rounded">
+                                        <span class="text-sm">Check all formats</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Subtitle Options -->
+                            <div x-show="activeTab === 'subtitle'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Subtitle Languages</label>
+                                        <input type="text" x-model="options.subtitleslangs" class="input-neon w-full text-sm" placeholder="en,es,fr">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Subtitle Format</label>
+                                        <select x-model="options.subtitlesformat" class="input-neon w-full text-sm">
+                                            <option value="best">Best</option>
+                                            <option value="srt">SRT</option>
+                                            <option value="ass">ASS</option>
+                                            <option value="vtt">VTT</option>
+                                            <option value="lrc">LRC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.writesubtitles" class="rounded">
+                                        <span class="text-sm">Write subtitles</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.writeautomaticsub" class="rounded">
+                                        <span class="text-sm">Write auto subtitles</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.allsubtitles" class="rounded">
+                                        <span class="text-sm">All subtitles</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Post-Processing Options -->
+                            <div x-show="activeTab === 'post_processing'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Video Recode Format</label>
+                                        <select x-model="options.recode_video" class="input-neon w-full text-sm">
+                                            <option value="">No recoding</option>
+                                            <option value="mp4">MP4</option>
+                                            <option value="flv">FLV</option>
+                                            <option value="ogg">OGG</option>
+                                            <option value="webm">WebM</option>
+                                            <option value="mkv">MKV</option>
+                                            <option value="avi">AVI</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Audio Format</label>
+                                        <select x-model="options.audio_format" class="input-neon w-full text-sm">
+                                            <option value="best">Best</option>
+                                            <option value="mp3">MP3</option>
+                                            <option value="aac">AAC</option>
+                                            <option value="flac">FLAC</option>
+                                            <option value="m4a">M4A</option>
+                                            <option value="opus">Opus</option>
+                                            <option value="vorbis">Vorbis</option>
+                                            <option value="wav">WAV</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Audio Quality</label>
+                                        <select x-model="options.audio_quality" class="input-neon w-full text-sm">
+                                            <option value="0">0 (Best)</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5 (Default)</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9 (Worst)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.extract_audio" class="rounded">
+                                        <span class="text-sm">Extract audio</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.keep_video" class="rounded">
+                                        <span class="text-sm">Keep video</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.embed_subs" class="rounded">
+                                        <span class="text-sm">Embed subtitles</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.embed_thumbnail" class="rounded">
+                                        <span class="text-sm">Embed thumbnail</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.embed_metadata" class="rounded">
+                                        <span class="text-sm">Embed metadata</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.embed_chapters" class="rounded">
+                                        <span class="text-sm">Embed chapters</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Parse Metadata</label>
+                                        <input type="text" x-model="options.parse_metadata" class="input-neon w-full text-sm" placeholder="FROM_FIELD:TO_FIELD">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Replace in Metadata</label>
+                                        <input type="text" x-model="options.replace_in_metadata" class="input-neon w-full text-sm" placeholder="FIELD REGEX REPLACE">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Remove Chapters</label>
+                                        <input type="text" x-model="options.remove_chapters" class="input-neon w-full text-sm" placeholder="sponsor|intro">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Post-processor Args</label>
+                                        <input type="text" x-model="options.postprocessor_args" class="input-neon w-full text-sm" placeholder="-vcodec libx264">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.xattrs" class="rounded">
+                                        <span class="text-sm">Write extended attributes</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.embed_info_json" class="rounded">
+                                        <span class="text-sm">Embed info JSON</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Authentication Options -->
+                            <div x-show="activeTab === 'authentication'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Username</label>
+                                        <input type="text" x-model="options.username" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Password</label>
+                                        <input type="password" x-model="options.password" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Video Password</label>
+                                        <input type="password" x-model="options.video_password" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Two-Factor Code</label>
+                                        <input type="text" x-model="options.twofactor" class="input-neon w-full text-sm">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.netrc" class="rounded">
+                                        <span class="text-sm">Use .netrc</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Thumbnail Options -->
+                            <div x-show="activeTab === 'thumbnail'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.write_thumbnail" class="rounded">
+                                        <span class="text-sm">Write thumbnail</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.write_all_thumbnails" class="rounded">
+                                        <span class="text-sm">Write all thumbnails</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- SponsorBlock Options -->
+                            <div x-show="activeTab === 'sponsorblock'" class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Mark Segments</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="sponsor" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Sponsor</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="intro" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Intro</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="outro" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Outro</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="selfpromo" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Self Promo</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="preview" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Preview</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="filler" x-model="options.sponsorblock_mark" class="rounded">
+                                            <span>Filler</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Remove Segments</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="sponsor" x-model="options.sponsorblock_remove" class="rounded">
+                                            <span>Sponsor</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="intro" x-model="options.sponsorblock_remove" class="rounded">
+                                            <span>Intro</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" value="outro" x-model="options.sponsorblock_remove" class="rounded">
+                                            <span>Outro</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Extractor Options -->
+                            <div x-show="activeTab === 'extractor'" class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Extractor Arguments</label>
+                                    <input type="text" x-model="options.extractor_args" class="input-neon w-full text-sm" placeholder="youtube:skip=dash">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.youtube_include_dash_manifest" class="rounded">
+                                        <span class="text-sm">YouTube DASH manifest</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.youtube_include_hls_manifest" class="rounded">
+                                        <span class="text-sm">YouTube HLS manifest</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Geo Restriction -->
+                            <div x-show="activeTab === 'geo_restriction'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Geo Verification Proxy</label>
+                                        <input type="url" x-model="options.geo_verification_proxy" class="input-neon w-full text-sm" placeholder="http://proxy.example.com:8080">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Bypass Country</label>
+                                        <input type="text" x-model="options.geo_bypass_country" class="input-neon w-full text-sm" placeholder="US">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.geo_bypass" class="rounded">
+                                        <span class="text-sm">Geo bypass</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Cookies & Headers -->
+                            <div x-show="activeTab === 'cookies'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Cookies File</label>
+                                        <input type="file" x-model="options.cookiefile" class="input-neon w-full text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Cookies from Browser</label>
+                                        <input type="text" x-model="options.cookiesfrombrowser" class="input-neon w-full text-sm" placeholder="chrome, firefox, safari">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">User Agent</label>
+                                        <input type="text" x-model="options.user_agent" class="input-neon w-full text-sm" placeholder="Mozilla/5.0 ...">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Referer</label>
+                                        <input type="url" x-model="options.referer" class="input-neon w-full text-sm" placeholder="https://example.com">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.no_cookies" class="rounded">
+                                        <span class="text-sm">Do not read/dump cookies</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Workarounds -->
+                            <div x-show="activeTab === 'workarounds'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Encoding</label>
+                                        <input type="text" x-model="options.encoding" class="input-neon w-full text-sm" placeholder="utf-8">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Sleep Interval</label>
+                                        <input type="number" x-model="options.sleep_interval" min="0" class="input-neon w-full text-sm" placeholder="seconds">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Max Sleep Interval</label>
+                                        <input type="number" x-model="options.max_sleep_interval" min="0" class="input-neon w-full text-sm" placeholder="seconds">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.no_check_certificates" class="rounded">
+                                        <span class="text-sm">Skip HTTPS certificate validation</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.prefer_insecure" class="rounded">
+                                        <span class="text-sm">Prefer unencrypted connections</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.legacy_server_connect" class="rounded">
+                                        <span class="text-sm">Use legacy server connect</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Verbosity & Simulation -->
+                            <div x-show="activeTab === 'verbosity'" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.quiet" class="rounded">
+                                        <span class="text-sm">Quiet mode</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.no_warnings" class="rounded">
+                                        <span class="text-sm">No warnings</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.simulate" class="rounded">
+                                        <span class="text-sm">Simulate</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.skip_download" class="rounded">
+                                        <span class="text-sm">Skip download</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" x-model="options.print_json" class="rounded">
+                                        <span class="text-sm">Print JSON</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Results -->
+                <div id="download-results" class="space-y-1"></div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

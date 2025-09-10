@@ -1,0 +1,399 @@
+/* Music Theme for yt-dlp-co2 */
+/* Inspired by audio visualizers, sound waves, and music production */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+
+:root {
+  --music-bass: #ff6b35;
+  --music-mid: #f7931e;
+  --music-treble: #ffd23f;
+  --music-vocal: #ee5a24;
+  --music-bg: #2c2c54;
+  --music-dark: #1a1a2e;
+  --music-card-bg: rgba(44, 44, 84, 0.9);
+  --music-accent: #ff3838;
+  --music-glow: #ff6348;
+  --music-wave: #ff9ff3;
+}
+
+body {
+  background: linear-gradient(135deg, var(--music-dark) 0%, #16213e 30%, var(--music-bg) 70%, var(--music-dark) 100%);
+  color: var(--music-treble);
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Audio equalizer background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Equalizer bars */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255, 107, 53, 0.1) 5px,
+      transparent 10px,
+      transparent 20px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(247, 147, 30, 0.05) 2px,
+      transparent 4px,
+      transparent 40px
+    ),
+    /* Sound wave patterns */
+    radial-gradient(ellipse at 20% 50%, rgba(255, 210, 63, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(255, 56, 56, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 70%, rgba(255, 159, 243, 0.04) 0%, transparent 30%);
+  animation: equalizer-pulse 4s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+/* Floating audio bars */
+#audio-visualizer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.audio-bar {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to top, var(--music-bass), var(--music-treble));
+  border-radius: 2px 2px 0 0;
+  animation: audio-bounce linear infinite;
+  box-shadow: 0 0 8px var(--music-glow);
+}
+
+@keyframes equalizer-pulse {
+  0% { transform: scale(1) skewX(0deg); opacity: 0.6; }
+  100% { transform: scale(1.02) skewX(0.5deg); opacity: 0.8; }
+}
+
+@keyframes audio-bounce {
+  0%, 100% { 
+    height: 10px;
+    background: linear-gradient(to top, var(--music-bass), var(--music-mid));
+  }
+  25% { 
+    height: 60px;
+    background: linear-gradient(to top, var(--music-bass), var(--music-treble));
+  }
+  50% { 
+    height: 25px;
+    background: linear-gradient(to top, var(--music-mid), var(--music-wave));
+  }
+  75% { 
+    height: 45px;
+    background: linear-gradient(to top, var(--music-vocal), var(--music-accent));
+  }
+}
+
+/* Music-themed text effects */
+h1 {
+  color: var(--music-accent);
+  text-shadow: 
+    0 0 10px var(--music-accent),
+    0 0 20px var(--music-glow),
+    0 0 30px rgba(255, 56, 56, 0.5),
+    /* Beat drop shadow */
+    3px 3px 0px var(--music-bass);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  animation: beat-pulse 2s ease-in-out infinite;
+}
+
+@keyframes beat-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.tagline {
+  color: var(--music-wave);
+  text-shadow: 
+    0 0 5px var(--music-wave),
+    0 0 10px var(--music-vocal);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Studio equipment card styling */
+.card {
+  background: var(--music-card-bg);
+  border: 2px solid var(--music-bass);
+  border-radius: 8px;
+  box-shadow: 
+    0 0 20px rgba(255, 107, 53, 0.3),
+    inset 0 0 20px rgba(255, 210, 63, 0.05),
+    /* Studio lighting effect */
+    0 8px 16px rgba(26, 26, 46, 0.4);
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--music-bass), var(--music-treble), var(--music-wave));
+  border-radius: 8px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Console-style buttons */
+.btn-neon {
+  background: linear-gradient(45deg, var(--music-bg), var(--music-dark));
+  border: 2px solid var(--music-accent);
+  color: var(--music-treble);
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 15px rgba(255, 56, 56, 0.4),
+    inset 0 0 15px rgba(255, 210, 63, 0.1);
+  font-family: 'JetBrains Mono', monospace;
+  position: relative;
+}
+
+.btn-neon:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 5px 25px rgba(255, 56, 56, 0.6),
+    inset 0 0 25px rgba(255, 210, 63, 0.2);
+  text-shadow: 0 0 10px var(--music-treble);
+  background: linear-gradient(45deg, var(--music-accent), var(--music-glow));
+  animation: button-beat 0.3s ease-out;
+}
+
+@keyframes button-beat {
+  0% { transform: translateY(-2px) scale(1); }
+  50% { transform: translateY(-2px) scale(1.05); }
+  100% { transform: translateY(-2px) scale(1); }
+}
+
+.btn-neon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  filter: grayscale(40%);
+}
+
+/* Mixer-style inputs */
+.input-neon {
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid var(--music-bass);
+  border-radius: 6px;
+  color: var(--music-treble);
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 
+    0 0 15px rgba(255, 107, 53, 0.3),
+    inset 0 0 15px rgba(255, 107, 53, 0.05);
+}
+
+.input-neon:focus {
+  outline: none;
+  border-color: var(--music-accent);
+  box-shadow: 
+    0 0 25px rgba(255, 56, 56, 0.5),
+    inset 0 0 25px rgba(255, 56, 56, 0.1);
+  background: rgba(44, 44, 84, 0.9);
+}
+
+.input-neon::placeholder {
+  color: rgba(255, 210, 63, 0.6);
+  font-style: italic;
+}
+
+/* Audio level meter */
+.progress-neon {
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid var(--music-bass);
+  border-radius: 6px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-neon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--music-bass), var(--music-accent));
+  width: var(--progress, 0%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 56, 56, 0.6);
+}
+
+/* Success/Error states */
+.success-neon {
+  border-color: var(--music-treble);
+  background: rgba(255, 210, 63, 0.1);
+  box-shadow: 0 0 20px rgba(255, 210, 63, 0.4);
+}
+
+.error-neon {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Track selection */
+.format-option {
+  background: rgba(26, 26, 46, 0.6);
+  border: 1px solid var(--music-bg);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--music-treble);
+}
+
+.format-option:hover {
+  transform: translateY(-1px);
+  border-color: var(--music-bass);
+  background: rgba(44, 44, 84, 0.8);
+}
+
+.format-option:hover,
+.format-option.selected {
+  border-color: var(--music-accent);
+  background: rgba(255, 56, 56, 0.1);
+  box-shadow: 0 0 12px rgba(255, 56, 56, 0.3);
+}
+
+/* Theme option buttons */
+.theme-option {
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid var(--music-bass);
+  border-radius: 6px;
+  color: var(--music-treble);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  position: relative;
+  z-index: 1000;
+}
+
+.theme-option:hover {
+  background: rgba(44, 44, 84, 0.9);
+  box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+  text-shadow: 0 0 8px var(--music-treble);
+  transform: translateY(-1px);
+}
+
+.theme-option.active {
+  background: rgba(44, 44, 84, 0.9);
+  box-shadow: 0 0 20px rgba(255, 56, 56, 0.6);
+  text-shadow: 0 0 10px var(--music-accent);
+  border-color: var(--music-accent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--music-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--music-bass), var(--music-accent));
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(255, 56, 56, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .btn-neon {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for loading states */
+@keyframes pulse-music {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.loading {
+  animation: pulse-music 1.5s ease-in-out infinite;
+}
+
+/* Close button styling */
+.card:hover .opacity-0 {
+  opacity: 1;
+}
+
+.close-btn {
+  background: rgba(26, 26, 46, 0.8);
+  border-radius: 4px;
+  padding: 4px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--music-bg);
+}
+
+.close-btn:hover {
+  background: rgba(44, 44, 84, 0.9);
+  box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+  border-color: var(--music-bass);
+}
+
+/* Footer styling */
+footer {
+  border-top: 2px solid var(--music-bass);
+  background: rgba(26, 26, 46, 0.8);
+  box-shadow: 0 -5px 15px rgba(255, 107, 53, 0.2);
+}
+
+footer p {
+  color: var(--music-treble);
+  text-shadow: 0 0 5px var(--music-bass);
+}
+
+/* Beat-responsive glow animation */
+@keyframes studio-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--music-bass); }
+  33% { box-shadow: 0 0 20px var(--music-accent), 0 0 30px var(--music-glow); }
+  66% { box-shadow: 0 0 15px var(--music-treble), 0 0 25px var(--music-wave); }
+}
+
+.card:hover {
+  animation: studio-glow 3s ease-in-out infinite;
+}
